@@ -14,10 +14,4 @@ export class TodoTagsController {
     return this.todoTagsService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoTagDto: UpdateTodoTagDto) {
-    return this.todoTagsService.update(+id, updateTodoTagDto);
-  }
-
 }

@@ -20,17 +20,10 @@ export class TodoTagsService {
     return await this.todoTagRepository.save(todos);
   }
 
-  findAll() {
-    return `This action returns all todoTags`;
+  async findAll(): Promise<TodoTag[]> {
+    return await this.todoTagRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} todoTag`;
-  }
-
-  update(id: number, updateTodoTagDto: UpdateTodoTagDto) {
-    return `This action updates a #${id} todoTag`;
-  }
 
   async delete(id: number) {
     const tag = await this.todoTagRepository.findOne({ where: {  todo : { id: id } } })
