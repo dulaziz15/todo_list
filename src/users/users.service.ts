@@ -16,7 +16,7 @@ export class UsersService {
 
     async create(createUserDto: CreateUserDto): Promise<any> {
         const user = await this.userRepository.save(createUserDto);
-        return user;
+        return "User berhasil dibuat";
     }
 
     async update(id: number, updateUserDto: UpdateUserDto): Promise<string> {

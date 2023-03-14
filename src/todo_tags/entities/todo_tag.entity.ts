@@ -9,8 +9,8 @@ export class TodoTag {
     id: number;
 
     @ManyToOne(() => Todo, (todo) => todo.Todo_tags)
-    todo_: number;
+    todo : Todo;
 
     @ManyToOne(() => Tag, (tag) => tag.Tags_id)
-    tag_: number;
+    tag : Tag;
 }

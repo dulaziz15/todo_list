@@ -1,8 +1,9 @@
+import { TodoTag } from 'src/todo_tags/entities/todo_tag.entity';
+import { TodoTagsService } from 'src/todo_tags/todo_tags.service';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
-import { User } from 'src/users/entities/user.entity';
 import { Todo } from 'src/todos/entities/todo.entity';
-import { Repository, getRepository } from 'typeorm';
-import { Injectable, Req, UseGuards } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { Body, Injectable, Req, UseGuards } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,14 +13,18 @@ export class TodosService {
 
   constructor (
     @InjectRepository(Todo)
-    private todoRepository: Repository<Todo>
+    private todoRepository: Repository<Todo>,
+    private todoTagService: TodoTagsService
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  async create(createTodoDto: CreateTodoDto, id: number): Promise<Todo> {
+  async create(createTodoDto: CreateTodoDto, id: number): Promise<any> {
+    const { tag, ...result } = createTodoDto;
     const todo = this.todoRepository.create({ ...createTodoDto, user: { id: id } });
-    console.log(todo);
-    return await this.todoRepository.save(todo);
+    await this.todoRepository.save(todo);
+    const id_todo = todo.id;
+    // console.log(id_todo);
+    return await this.todoTagService.create(id_todo, tag);
   }
 
   
@@ -33,11 +38,27 @@ export class TodosService {
     return `This action returns a #${id} todo`;
   }
 
-  update(id: number, updateTodoDto: UpdateTodoDto) {
-    return `This action updates a #${id} todo`;
+  async update(id: number, updateTodoDto: UpdateTodoDto, @Body('tag') tag: number) {
+    const todo = await this.todoRepository.findOne({where: {id: id}});
+
+    if (!todo) {
+      return new Error('data tidak ada');
+    }
+
+    todo.title = updateTodoDto.title;
+    todo.description = updateTodoDto.description;
+    todo.completed = updateTodoDto.completed;
+    todo.due_time = updateTodoDto.due_time;
+    const id_todo = todo.id;
+    // console.log(tag);
+    await this.todoRepository.save(todo);
+    await this.todoTagService.delete(id_todo);
+    return await this.todoTagService.create(id_todo, tag);
+    // return `This action updates a #${id} tag`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} todo`;
+  async remove(id: number) {
+    await this.todoTagService.delete(id)
+    return await this.todoRepository.delete(id);
   }
 }

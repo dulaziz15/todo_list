@@ -38,6 +38,6 @@ export class Todo {
     @DeleteDateColumn()
     delete_at: Date;
 
-    @OneToMany(() => TodoTag, (todotag) => todotag.todo_)
+    @OneToMany(() => TodoTag, (todotag) => todotag.todo)
     Todo_tags: TodoTag[];
 }

@@ -24,6 +24,6 @@ export class Tag {
     @DeleteDateColumn()
     delete_at: Date;
 
-    @OneToMany(() => TodoTag, (todotag) => todotag.tag_)
+    @OneToMany(() => TodoTag, (todotag) => todotag.tag)
     Tags_id: TodoTag[];
 }
