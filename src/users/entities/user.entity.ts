@@ -1,7 +1,7 @@
 import { Todo } from "src/todos/entities/todo.entity";
 import { Hash } from "crypto";
 import * as bcrypt from "bcryptjs";
-import { BaseEntity, BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn, CreateDateColumn, DeleteDateColumn } from "typeorm";
 import { CreateUserDto } from "../dto/create-user.dto";
 
 @Entity()
@@ -29,7 +29,7 @@ export class User extends BaseEntity{
     }
 
     @Column()
-    @UpdateDateColumn()
+    @CreateDateColumn()
     create_at: Date;
 
     @Column()
@@ -37,9 +37,9 @@ export class User extends BaseEntity{
     update_at: Date;
 
     @Column()
-    @UpdateDateColumn()
+    @DeleteDateColumn()
     delete_at: Date;
 
-    @OneToMany(() => Todo, (todo) => todo.user_)
+    @OneToMany(() => Todo, (todo) => todo.user)
     todos: Todo[];
 }

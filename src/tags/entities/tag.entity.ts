@@ -1,5 +1,5 @@
 import { TodoTag } from 'src/todo_tags/entities/todo_tag.entity';
-import { Timestamp } from 'typeorm';
+import { CreateDateColumn, DeleteDateColumn, Timestamp, UpdateDateColumn } from 'typeorm';
 import { Column } from 'typeorm';
 import { PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Entity } from 'typeorm';
@@ -13,12 +13,15 @@ export class Tag {
     name: string;
 
     @Column()
+    @CreateDateColumn()
     create_at: Date;
 
     @Column()
+    @UpdateDateColumn()
     update_at: Date;
 
     @Column()
+    @DeleteDateColumn()
     delete_at: Date;
 
     @OneToMany(() => TodoTag, (todotag) => todotag.tag_)

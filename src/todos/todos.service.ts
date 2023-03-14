@@ -1,7 +1,7 @@
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { User } from 'src/users/entities/user.entity';
 import { Todo } from 'src/todos/entities/todo.entity';
-import { Repository } from 'typeorm';
+import { Repository, getRepository } from 'typeorm';
 import { Injectable, Req, UseGuards } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -17,23 +17,16 @@ export class TodosService {
 
   @UseGuards(JwtAuthGuard)
   async create(createTodoDto: CreateTodoDto, id: number): Promise<Todo> {
-    const todo = new Todo();
-    todo.title = createTodoDto.title;
-    todo.description = createTodoDto.description;
-    todo.completed = createTodoDto.completed;
-    todo.due_time = createTodoDto.due_time;
-    todo.create_at = createTodoDto.create_at;
-    todo.update_at = createTodoDto.update_at;
-    todo.delete_at = createTodoDto.delete_at;
-    todo.user_ = id;
-
+    const todo = this.todoRepository.create({ ...createTodoDto, user: { id: id } });
+    console.log(todo);
     return await this.todoRepository.save(todo);
   }
 
   
-  async findAll(id: number) {
-    console.log(id);
-    return await this.todoRepository.find({where: {user_ : id}});
+  async findAll(id: number): Promise<Todo[]> {
+    const jadi =  await this.todoRepository.find({ where: { user: { id: id } } });
+    console.log(jadi);
+    return jadi;
   }
 
   findOne(id: number) {

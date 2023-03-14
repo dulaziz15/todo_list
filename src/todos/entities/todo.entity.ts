@@ -1,4 +1,4 @@
-import { UpdateDateColumn } from 'typeorm';
+import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 import { TodoTag } from 'src/todo_tags/entities/todo_tag.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Timestamp } from 'typeorm';
@@ -22,14 +22,12 @@ export class Todo {
     @Column()
     @UpdateDateColumn()
     due_time: Date;
-
     
-
     @ManyToOne(() => User, (user) => user.todos)
-    user_: number;
+    user: User;
 
     @Column()
-    @UpdateDateColumn()
+    @CreateDateColumn()
     create_at: Date;
 
     @Column()
@@ -37,7 +35,7 @@ export class Todo {
     update_at: Date;
 
     @Column()
-    @UpdateDateColumn()
+    @DeleteDateColumn()
     delete_at: Date;
 
     @OneToMany(() => TodoTag, (todotag) => todotag.todo_)

@@ -1,26 +1,65 @@
+import { SingleTagDto } from './dto/single-tag.dto';
+import { Tag } from 'src/tags/entities/tag.entity';
+import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class TagsService {
-  create(createTagDto: CreateTagDto) {
-    return 'This action adds a new tag';
+
+  constructor(
+    @InjectRepository(Tag)
+    private tagRepository: Repository<Tag>
+  ) {}
+
+  async create(createTagDto: CreateTagDto) {
+    return await this.tagRepository.save(createTagDto);
   }
 
-  findAll() {
-    return `This action returns all tags`;
+  async findAll() {
+    return await this.tagRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tag`;
+  async findOne(id: number): Promise<SingleTagDto> {
+    const tag = await this.tagRepository.findOne({where: {id: id}});
+    if(!tag) {
+      throw new Error("data tidak ada");
+    }
+
+    return<SingleTagDto>{
+      id: tag.id,
+      name: tag.name,
+      create_at: tag.create_at,
+      update_at: tag.update_at,
+      delete_at: tag.delete_at
+    };
   }
 
-  update(id: number, updateTagDto: UpdateTagDto) {
+  async update(id: number, updateTagDto: UpdateTagDto) {
+    const tag = await this.tagRepository.findOne({where: {id: id}});
+
+    if (!tag) {
+      return new Error('data tidak ada');
+    }
+
+    tag.name = updateTagDto.name;
+
+    await this.tagRepository.save(tag);
+
     return `This action updates a #${id} tag`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const tag = await this.tagRepository.findOne({where: {id: id}});
+    if (!tag) {
+      return NotFoundError;
+    }
+
+    await this.tagRepository.delete(id);
+
     return `This action removes a #${id} tag`;
   }
 }
