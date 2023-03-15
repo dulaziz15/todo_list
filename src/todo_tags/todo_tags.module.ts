@@ -9,6 +9,6 @@ import { TodoTagsController } from './todo_tags.controller';
   imports: [TypeOrmModule.forFeature([TodoTag])],
   controllers: [TodoTagsController],
   providers: [TodoTagsService],
-  exports: [TodoTagsService]
+  exports: [TodoTagsService],
 })
 export class TodoTagsModule {}

@@ -29,7 +29,7 @@ export class TodosController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto, @Body('tag') tag: number) {
+  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto, @Body('tag') tag: number[]) {
     return this.todosService.update(+id, updateTodoDto, tag);
   }
 

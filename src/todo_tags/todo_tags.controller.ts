@@ -1,5 +1,14 @@
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { TodoTagsService } from './todo_tags.service';
 import { CreateTodoTagDto } from './dto/create-todo_tag.dto';
 import { UpdateTodoTagDto } from './dto/update-todo_tag.dto';
@@ -13,5 +22,4 @@ export class TodoTagsController {
   findAll() {
     return this.todoTagsService.findAll();
   }
-
 }

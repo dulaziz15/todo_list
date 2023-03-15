@@ -7,37 +7,37 @@ import { Entity } from 'typeorm';
 
 @Entity()
 export class Todo {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    title: string;
+  @Column()
+  title: string;
 
-    @Column()
-    description: string;
+  @Column()
+  description: string;
 
-    @Column()
-    completed: boolean;
+  @Column()
+  completed: boolean;
 
-    @Column()
-    @UpdateDateColumn()
-    due_time: Date;
-    
-    @ManyToOne(() => User, (user) => user.todos)
-    user: User;
+  @Column()
+  @UpdateDateColumn()
+  due_time: Date;
 
-    @Column()
-    @CreateDateColumn()
-    create_at: Date;
+  @ManyToOne(() => User, (user) => user.todos)
+  user: User;
 
-    @Column()
-    @UpdateDateColumn()
-    update_at: Date;
+  @Column()
+  @CreateDateColumn()
+  create_at: Date;
 
-    @Column()
-    @DeleteDateColumn()
-    delete_at: Date;
+  @Column()
+  @UpdateDateColumn()
+  update_at: Date;
 
-    @OneToMany(() => TodoTag, (todotag) => todotag.todo)
-    Todo_tags: TodoTag[];
+  @Column()
+  @DeleteDateColumn()
+  delete_at: Date;
+
+  @OneToMany(() => TodoTag, (todotag) => todotag.todo)
+  Todo_tags: TodoTag[];
 }

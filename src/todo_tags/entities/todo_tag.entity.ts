@@ -5,12 +5,12 @@ import { Entity } from 'typeorm';
 
 @Entity()
 export class TodoTag {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @ManyToOne(() => Todo, (todo) => todo.Todo_tags)
-    todo : Todo;
+  @ManyToOne(() => Todo, (todo) => todo.Todo_tags)
+  todo: Todo;
 
-    @ManyToOne(() => Tag, (tag) => tag.Tags_id)
-    tag : Tag;
+  @ManyToOne(() => Tag, (tag) => tag.Tags_id)
+  tag: Tag;
 }

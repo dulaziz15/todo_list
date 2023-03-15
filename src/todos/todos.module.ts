@@ -1,3 +1,4 @@
+import { TodoTag } from 'src/todo_tags/entities/todo_tag.entity';
 import { TagsService } from 'src/tags/tags.service';
 import { TodoTagsModule } from 'src/todo_tags/todo_tags.module';
 import { TodoTagsService } from 'src/todo_tags/todo_tags.service';
@@ -9,8 +10,8 @@ import { TodosService } from './todos.service';
 import { TodosController } from './todos.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Todo]), TodoTagsModule],
+  imports: [TypeOrmModule.forFeature([Todo]), TodoTagsModule, TagsModule],
   controllers: [TodosController],
-  providers: [TodosService]
+  providers: [TodosService],
 })
 export class TodosModule {}
