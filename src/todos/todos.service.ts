@@ -1,10 +1,9 @@
 import { TagsService } from 'src/tags/tags.service';
-import { TodoTag } from 'src/todo_tags/entities/todo_tag.entity';
 import { TodoTagsService } from 'src/todo_tags/todo_tags.service';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { Todo } from 'src/todos/entities/todo.entity';
 import { Repository } from 'typeorm';
-import { Body, Injectable, Req, UseGuards } from '@nestjs/common';
+import { Body, Injectable, UseGuards } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,7 +14,7 @@ export class TodosService {
     @InjectRepository(Todo)
     private todoRepository: Repository<Todo>,
     private todoTagService: TodoTagsService,
-    private tagsService: TagsService
+    private tagsService: TagsService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -30,18 +29,17 @@ export class TodosService {
     const todo_id = todo.id;
     const todoTags = [];
 
-    for(const tags of tag) {
-      const tag = await this.tagsService.findOne(tags)
+    for (const tags of tag) {
+      const tag = await this.tagsService.findOne(tags);
 
       if (!tag) {
-        throw new Error("data tidak ada")
+        throw new Error('data tidak ada');
       }
       todoTags.push(tags);
     }
-    
+
     // console.log(todoTags);
     return await this.todoTagService.create(todo_id, todoTags);
-      
   }
 
   async findAll(id: number): Promise<Todo[]> {
@@ -72,23 +70,22 @@ export class TodosService {
     todo.completed = updateTodoDto.completed;
     todo.due_time = updateTodoDto.due_time;
     const id_todo = todo.id;
-    // console.log(tag);
+
     await this.todoRepository.save(todo);
     await this.todoTagService.delete(id_todo);
-    
+
     const todo_id = todo.id;
     const todoTags = [];
 
-    for(const tags of tag) {
-      const tag = await this.tagsService.findOne(tags)
+    for (const tags of tag) {
+      const tag = await this.tagsService.findOne(tags);
 
       if (!tag) {
-        throw new Error("data tidak ada")
+        throw new Error('data tidak ada');
       }
       todoTags.push(tags);
     }
-    
-    // console.log(todoTags);
+
     return await this.todoTagService.create(todo_id, todoTags);
   }
 

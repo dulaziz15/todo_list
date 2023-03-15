@@ -12,7 +12,6 @@ import {
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('tags')
 export class TagsController {

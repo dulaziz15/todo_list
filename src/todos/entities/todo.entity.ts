@@ -1,7 +1,6 @@
 import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 import { TodoTag } from 'src/todo_tags/entities/todo_tag.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Timestamp } from 'typeorm';
 import { Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Entity } from 'typeorm';
 

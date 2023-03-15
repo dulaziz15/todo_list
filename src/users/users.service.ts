@@ -1,8 +1,7 @@
 import { UpdateUserDto } from './dto/update-todo.dto';
-import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Injectable, Req, UseGuards } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -14,7 +13,7 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<any> {
-    const user = await this.userRepository.save(createUserDto);
+    await this.userRepository.save(createUserDto);
     return 'User berhasil dibuat';
   }
 

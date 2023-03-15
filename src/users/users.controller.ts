@@ -6,11 +6,9 @@ import {
   Body,
   Controller,
   Get,
-  Param,
   Post,
   UseGuards,
   Req,
-  Put,
   Delete,
   Patch,
 } from '@nestjs/common';
@@ -24,7 +22,7 @@ export class UsersController {
   ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 

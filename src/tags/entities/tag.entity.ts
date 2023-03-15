@@ -1,10 +1,5 @@
 import { TodoTag } from 'src/todo_tags/entities/todo_tag.entity';
-import {
-  CreateDateColumn,
-  DeleteDateColumn,
-  Timestamp,
-  UpdateDateColumn,
-} from 'typeorm';
+import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 import { Column } from 'typeorm';
 import { PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Entity } from 'typeorm';

@@ -1,6 +1,6 @@
 import { Tag } from 'src/tags/entities/tag.entity';
 import { Todo } from 'src/todos/entities/todo.entity';
-import { ManyToMany, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Entity } from 'typeorm';
 
 @Entity()

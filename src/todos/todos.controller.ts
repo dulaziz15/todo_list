@@ -1,5 +1,15 @@
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -29,7 +39,11 @@ export class TodosController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto, @Body('tag') tag: number[]) {
+  update(
+    @Param('id') id: string,
+    @Body() updateTodoDto: UpdateTodoDto,
+    @Body('tag') tag: number[],
+  ) {
     return this.todosService.update(+id, updateTodoDto, tag);
   }
 

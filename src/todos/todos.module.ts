@@ -1,7 +1,4 @@
-import { TodoTag } from 'src/todo_tags/entities/todo_tag.entity';
-import { TagsService } from 'src/tags/tags.service';
 import { TodoTagsModule } from 'src/todo_tags/todo_tags.module';
-import { TodoTagsService } from 'src/todo_tags/todo_tags.service';
 import { TagsModule } from 'src/tags/tags.module';
 import { Todo } from 'src/todos/entities/todo.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';

@@ -1,4 +1,3 @@
-import { User } from './../users/entities/user.entity';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { UsersService } from './../users/users.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';

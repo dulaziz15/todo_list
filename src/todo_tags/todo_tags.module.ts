@@ -1,4 +1,3 @@
-import { TodosModule } from './../todos/todos.module';
 import { TodoTag } from 'src/todo_tags/entities/todo_tag.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
