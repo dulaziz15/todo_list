@@ -1,3 +1,4 @@
+import { TodoTag } from './../todo_tags/entities/todo_tag.entity';
 import { TagsService } from 'src/tags/tags.service';
 import { TodoTagsService } from 'src/todo_tags/todo_tags.service';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
@@ -13,6 +14,8 @@ export class TodosService {
   constructor(
     @InjectRepository(Todo)
     private todoRepository: Repository<Todo>,
+    @InjectRepository(TodoTag)
+    private todotagRepository: Repository<TodoTag>,
     private todoTagService: TodoTagsService,
     private tagsService: TagsService,
   ) {}
@@ -37,17 +40,17 @@ export class TodosService {
       }
       todoTags.push(tags);
     }
-
-    // console.log(todoTags);
     return await this.todoTagService.create(todo_id, todoTags);
   }
 
-  async findAll(id: number): Promise<Todo[]> {
-    const jadi = await this.todoRepository.find({
-      where: { user: { id: id } },
-    });
-    console.log(jadi);
-    return jadi;
+  async findAll(id: number) {
+    return await this.todotagRepository
+      .createQueryBuilder('todo')
+      .innerJoinAndSelect('todo.Todo_tags', 'todo_tag')
+      .innerJoinAndSelect('todo_tag.tag', 'tag')
+      .where({user: {id: id}})
+      .getMany()
+
   }
 
   findOne(id: number) {
