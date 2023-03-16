@@ -1,3 +1,4 @@
+import { SingleTodoDto } from './dto/single-todo.dto';
 import { TodoSearchDto } from './dto/todo-search.dto';
 import { TodoTag } from './../todo_tags/entities/todo_tag.entity';
 import { TagsService } from 'src/tags/tags.service';
@@ -68,109 +69,27 @@ export class TodosService {
       return datas;
   }
 
-  async search (
-    id: number,
-    todoSearchDto: TodoSearchDto
-  ) {
-    let queryBuilder = await this.todoRepository
-    .createQueryBuilder('todo')
+  async search(id: number, todoSearchDto: TodoSearchDto) {
+    let queryBuilder = this.todoRepository
+      .createQueryBuilder('todo')
       .innerJoinAndSelect('todo.Todo_tags', 'todo_tag')
       .innerJoinAndSelect('todo_tag.tag', 'tag')
-      .where({ user: { id: id } })
+      .where({ user: { id: id } });
 
     if (todoSearchDto.completed) {
-      const queryBuilder2 = await queryBuilder
-      .where({ completed: todoSearchDto.completed })
-      .getMany();
-
-      const datas = queryBuilder2.map(todo => ({
-        id: todo.id,
-        title: todo.title,
-        description: todo.description,
-        completed: todo.completed,
-        due_time: todo.due_time,
-        create_at: todo.create_at,
-        update_at: todo.update_at,
-        delete_at: todo.delete_at,
-        tags: todo.Todo_tags.map(todoTag => ({
-          id: todoTag.tag.id,
-          name: todoTag.tag.name,
-        })),
-      }));
-
-      if (todoSearchDto.tag) {
-        const datas = queryBuilder2.map(todo => ({
-          id: todo.id,
-          title: todo.title,
-          description: todo.description,
-          completed: todo.completed,
-          due_time: todo.due_time,
-          create_at: todo.create_at,
-          update_at: todo.update_at,
-          delete_at: todo.delete_at,
-          tags: todo.Todo_tags.map(todoTag => ({
-            id: todoTag.tag.id,
-            name: todoTag.tag.name,
-          })),
-        }));
-
-        const jadi = [];
-        
-        for (const data of datas) {
-          const data1 = data.tags;
-          for (const data2 of data1){
-            if(data2.id == todoSearchDto.tag) {
-              const data4 = datas.filter(datas => datas.tags === data1);
-              jadi.push(data4);
-            }
-          }
-        }
-
-        return jadi;
-
-      }
-
-      return datas;
+      queryBuilder = queryBuilder.andWhere({ completed: todoSearchDto.completed });
     }
 
-    if(todoSearchDto.tag) {
-      const queryBuilderTag = await queryBuilder.getMany();
-
-      const datas = queryBuilderTag.map(todo => ({
-          id: todo.id,
-          title: todo.title,
-          description: todo.description,
-          completed: todo.completed,
-          due_time: todo.due_time,
-          create_at: todo.create_at,
-          update_at: todo.update_at,
-          delete_at: todo.delete_at,
-          tags: todo.Todo_tags.map(todoTag => ({
-            id: todoTag.tag.id,
-            name: todoTag.tag.name,
-          })),
-        }));
-
-        const jadi = [];
-        
-        for (const data of datas) {
-          const data1 = data.tags;
-          for (const data2 of data1){
-            if(data2.id == todoSearchDto.tag) {
-              const data4 = datas.filter(datas => datas.tags === data1);
-              jadi.push(data4);
-            }
-          }
-        }
-
-        return jadi;
+    if (todoSearchDto.tag) {
+      queryBuilder = queryBuilder.andWhere('tag.id = :tag ', {
+        tag: todoSearchDto.tag,
+      });
     }
-  }
 
-  async searchByTag(id: number, todoSearchDto: TodoSearchDto) {
-    console.log("data")
+    const todos = await queryBuilder.getMany();
+    
+    return todos.map((todo) => new SingleTodoDto().FromEntity(todo));
   }
-
 
   findOne(id: number) {
     return `This action returns a #${id} todo`;

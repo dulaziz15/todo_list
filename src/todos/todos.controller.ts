@@ -29,14 +29,11 @@ export class TodosController {
 
   @UseGuards(JwtAuthGuard)
   @Get('')
-  find(@Req() req, @Query('') todoSearchDto: TodoSearchDto) {
+  find(@Req() req, @Query() todoSearchDto: TodoSearchDto) {
     const id = req.user.userId;
-    // console.log(completed);
     if (todoSearchDto) {
-      // console.log(completed);
       return this.todosService.search(id, todoSearchDto)
     } else {
-      // console.log("benar");
       return this.todosService.findAll(id);
     }
 
