@@ -1,3 +1,4 @@
+import { TodoSearchDto } from './dto/todo-search.dto';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import {
   Controller,
@@ -9,6 +10,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -26,10 +28,18 @@ export class TodosController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get()
-  find(@Req() req) {
+  @Get('')
+  find(@Req() req, @Query('completed') completed: boolean, @Query('tag') tag: number) {
     const id = req.user.userId;
-    return this.todosService.findAll(id);
+    // console.log(completed);
+    if (completed) {
+      // console.log(completed);
+      return this.todosService.search(id, completed, tag)
+    } else {
+      // console.log("benar");
+      return this.todosService.findAll(id);
+    }
+
   }
 
   @Get(':id')

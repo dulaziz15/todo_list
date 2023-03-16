@@ -1,10 +1,11 @@
+import { TodoSearchDto } from './dto/todo-search.dto';
 import { TodoTag } from './../todo_tags/entities/todo_tag.entity';
 import { TagsService } from 'src/tags/tags.service';
 import { TodoTagsService } from 'src/todo_tags/todo_tags.service';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { Todo } from 'src/todos/entities/todo.entity';
-import { Repository } from 'typeorm';
-import { Body, Injectable, UseGuards } from '@nestjs/common';
+import { Repository, QueryBuilder } from 'typeorm';
+import { Body, Injectable, Param, UseGuards } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -42,7 +43,7 @@ export class TodosService {
   }
 
   async findAll(id: number) {
-    const data = await this.todoRepository
+    let data = await this.todoRepository
       .createQueryBuilder('todo')
       .innerJoinAndSelect('todo.Todo_tags', 'todo_tag')
       .innerJoinAndSelect('todo_tag.tag', 'tag')
@@ -66,6 +67,79 @@ export class TodosService {
 
       return datas;
   }
+
+  async search (
+    id: number,
+    completed: boolean,
+    tag: number
+  ) {
+    let queryBuilder = await this.todoRepository
+    .createQueryBuilder('todo')
+      .innerJoinAndSelect('todo.Todo_tags', 'todo_tag')
+      .innerJoinAndSelect('todo_tag.tag', 'tag')
+      .where({ user: { id: id } })
+
+    if (completed) {
+      const queryBuilder2 = await queryBuilder
+      .where({ completed: completed })
+      .getMany();
+
+      const datas = queryBuilder2.map(todo => ({
+        id: todo.id,
+        title: todo.title,
+        description: todo.description,
+        completed: todo.completed,
+        due_time: todo.due_time,
+        create_at: todo.create_at,
+        update_at: todo.update_at,
+        delete_at: todo.delete_at,
+        tags: todo.Todo_tags.map(todoTag => ({
+          id: todoTag.tag.id,
+          name: todoTag.tag.name,
+        })),
+      }));
+
+      if (tag) {
+        const datas = queryBuilder2.map(todo => ({
+          id: todo.id,
+          title: todo.title,
+          description: todo.description,
+          completed: todo.completed,
+          due_time: todo.due_time,
+          create_at: todo.create_at,
+          update_at: todo.update_at,
+          delete_at: todo.delete_at,
+          tags: todo.Todo_tags.map(todoTag => ({
+            id: todoTag.tag.id,
+            name: todoTag.tag.name,
+          })),
+        }));
+
+        const jadi = [];
+        
+        for (const data of datas) {
+          const data1 = data.tags;
+          for (const data2 of data1){
+            if(data2.id == tag) {
+              const data4 = datas.filter(datas => datas.tags === data1);
+              jadi.push(data4);
+            }
+          }
+        }
+
+        return jadi;
+
+      }
+
+      return datas;
+      // console.log(datas);
+    }
+
+    if ( tag ) {
+
+    }
+  }
+
 
   findOne(id: number) {
     return `This action returns a #${id} todo`;
