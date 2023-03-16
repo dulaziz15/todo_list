@@ -70,8 +70,7 @@ export class TodosService {
 
   async search (
     id: number,
-    completed: boolean,
-    tag: number
+    todoSearchDto: TodoSearchDto
   ) {
     let queryBuilder = await this.todoRepository
     .createQueryBuilder('todo')
@@ -79,9 +78,9 @@ export class TodosService {
       .innerJoinAndSelect('todo_tag.tag', 'tag')
       .where({ user: { id: id } })
 
-    if (completed) {
+    if (todoSearchDto.completed) {
       const queryBuilder2 = await queryBuilder
-      .where({ completed: completed })
+      .where({ completed: todoSearchDto.completed })
       .getMany();
 
       const datas = queryBuilder2.map(todo => ({
@@ -99,7 +98,7 @@ export class TodosService {
         })),
       }));
 
-      if (tag) {
+      if (todoSearchDto.tag) {
         const datas = queryBuilder2.map(todo => ({
           id: todo.id,
           title: todo.title,
@@ -120,7 +119,7 @@ export class TodosService {
         for (const data of datas) {
           const data1 = data.tags;
           for (const data2 of data1){
-            if(data2.id == tag) {
+            if(data2.id == todoSearchDto.tag) {
               const data4 = datas.filter(datas => datas.tags === data1);
               jadi.push(data4);
             }
@@ -132,12 +131,44 @@ export class TodosService {
       }
 
       return datas;
-      // console.log(datas);
     }
 
-    if ( tag ) {
+    if(todoSearchDto.tag) {
+      const queryBuilderTag = await queryBuilder.getMany();
 
+      const datas = queryBuilderTag.map(todo => ({
+          id: todo.id,
+          title: todo.title,
+          description: todo.description,
+          completed: todo.completed,
+          due_time: todo.due_time,
+          create_at: todo.create_at,
+          update_at: todo.update_at,
+          delete_at: todo.delete_at,
+          tags: todo.Todo_tags.map(todoTag => ({
+            id: todoTag.tag.id,
+            name: todoTag.tag.name,
+          })),
+        }));
+
+        const jadi = [];
+        
+        for (const data of datas) {
+          const data1 = data.tags;
+          for (const data2 of data1){
+            if(data2.id == todoSearchDto.tag) {
+              const data4 = datas.filter(datas => datas.tags === data1);
+              jadi.push(data4);
+            }
+          }
+        }
+
+        return jadi;
     }
+  }
+
+  async searchByTag(id: number, todoSearchDto: TodoSearchDto) {
+    console.log("data")
   }
 
 

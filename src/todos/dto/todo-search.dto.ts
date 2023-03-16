@@ -4,7 +4,7 @@ export class TodoSearchDto {
     @IsOptional()
     @IsString()
     @MinLength(2)
-    public tag: string;
+    public tag: number;
 
     @IsOptional()
     @IsString()
