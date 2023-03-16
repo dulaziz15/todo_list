@@ -19,7 +19,7 @@ export class TodosService {
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  async create(createTodoDto: CreateTodoDto, id: number): Promise<any> {
+  async create(@Body() createTodoDto: CreateTodoDto, id: number): Promise<any> {
     const { tag, ...result } = createTodoDto;
     const todo = this.todoRepository.create({
       ...createTodoDto,
@@ -42,12 +42,29 @@ export class TodosService {
   }
 
   async findAll(id: number) {
-    return await this.todoRepository
+    const data = await this.todoRepository
       .createQueryBuilder('todo')
       .innerJoinAndSelect('todo.Todo_tags', 'todo_tag')
       .innerJoinAndSelect('todo_tag.tag', 'tag')
       .where({ user: { id: id } })
       .getMany();
+
+      const datas = data.map(todo => ({
+        id: todo.id,
+        title: todo.title,
+        description: todo.description,
+        completed: todo.completed,
+        due_time: todo.due_time,
+        create_at: todo.create_at,
+        update_at: todo.update_at,
+        delete_at: todo.delete_at,
+        tags: todo.Todo_tags.map(todoTag => ({
+          id: todoTag.tag.id,
+          name: todoTag.tag.name,
+        })),
+      }));
+
+      return datas;
   }
 
   findOne(id: number) {
