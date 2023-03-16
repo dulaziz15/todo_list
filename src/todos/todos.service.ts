@@ -14,8 +14,6 @@ export class TodosService {
   constructor(
     @InjectRepository(Todo)
     private todoRepository: Repository<Todo>,
-    @InjectRepository(TodoTag)
-    private todotagRepository: Repository<TodoTag>,
     private todoTagService: TodoTagsService,
     private tagsService: TagsService,
   ) {}
@@ -44,13 +42,12 @@ export class TodosService {
   }
 
   async findAll(id: number) {
-    return await this.todotagRepository
+    return await this.todoRepository
       .createQueryBuilder('todo')
       .innerJoinAndSelect('todo.Todo_tags', 'todo_tag')
       .innerJoinAndSelect('todo_tag.tag', 'tag')
-      .where({user: {id: id}})
-      .getMany()
-
+      .where({ user: { id: id } })
+      .getMany();
   }
 
   findOne(id: number) {
