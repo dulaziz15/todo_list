@@ -27,14 +27,12 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  // @UseGuards(AuthGuard())
   @Get('')
   async getProfile(@Req() req) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
-  // @UseGuards(AuthGuard())
   @Patch('')
   async update(@Req() req, @Body() updateUserDto: UpdateUserDto) {
     const id = req.user.userId;

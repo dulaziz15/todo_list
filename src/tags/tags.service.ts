@@ -23,7 +23,6 @@ export class TagsService {
   }
 
   async findOne(tags: number): Promise<SingleTagDto> {
-    // console.log(tags)
     const tag = await this.tagRepository.findOne({ where: { id: tags } });
 
     if (!tag) {
@@ -36,6 +35,19 @@ export class TagsService {
       create_at: tag.create_at,
       update_at: tag.update_at,
       delete_at: tag.delete_at,
+    };
+  }
+
+  async findOneAndReturn(tags: number): Promise<SingleTagDto> {
+    const tag = await this.tagRepository.findOne({ where: { id: tags } });
+
+    if (!tag) {
+      throw new Error('data tidak ada');
+    }
+
+    return <SingleTagDto>{
+      id: tag.id,
+      name: tag.name,
     };
   }
 

@@ -1,12 +1,12 @@
-import { IsOptional, IsString, MinLength } from "class-validator";
+import { IsOptional, IsString, MinLength } from 'class-validator';
 
 export class TodoSearchDto {
-    @IsOptional()
-    @IsString()
-    @MinLength(2)
-    public tag: number;
+  @IsOptional()
+  @IsString()
+  @MinLength(2)
+  public tag: number;
 
-    @IsOptional()
-    @IsString()
-    public completed: boolean;
+  @IsOptional()
+  @IsString()
+  public completed: boolean;
 }

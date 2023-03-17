@@ -1,7 +1,6 @@
-import { TodoTag } from 'src/todo_tags/entities/todo_tag.entity';
 import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 import { Column } from 'typeorm';
-import { PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { PrimaryGeneratedColumn } from 'typeorm';
 import { Entity } from 'typeorm';
 
 @Entity()
@@ -23,7 +22,4 @@ export class Tag {
   @Column()
   @DeleteDateColumn()
   delete_at: Date;
-
-  @OneToMany(() => TodoTag, (todotag) => todotag.tag)
-  Tags_id: TodoTag[];
 }

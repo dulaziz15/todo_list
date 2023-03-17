@@ -6,7 +6,6 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TodosModule } from './todos/todos.module';
 import { TagsModule } from './tags/tags.module';
-import { TodoTagsModule } from './todo_tags/todo_tags.module';
 import { AuthModule } from './auth/auth.module';
 
 const entities = [User];
@@ -27,7 +26,6 @@ const entities = [User];
     UsersModule,
     TodosModule,
     TagsModule,
-    TodoTagsModule,
     AuthModule,
   ],
   controllers: [AppController],

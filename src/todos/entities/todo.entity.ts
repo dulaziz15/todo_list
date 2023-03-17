@@ -1,7 +1,13 @@
-import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
-import { TodoTag } from 'src/todo_tags/entities/todo_tag.entity';
+import { Tag } from './../../tags/entities/tag.entity';
+import {
+  CreateDateColumn,
+  DeleteDateColumn,
+  JoinTable,
+  ManyToMany,
+  UpdateDateColumn,
+} from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
-import { Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Entity } from 'typeorm';
 
 @Entity()
@@ -37,6 +43,7 @@ export class Todo {
   @DeleteDateColumn()
   delete_at: Date;
 
-  @OneToMany(() => TodoTag, (todotag) => todotag.todo)
-  Todo_tags: TodoTag[];
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags: Tag[];
 }

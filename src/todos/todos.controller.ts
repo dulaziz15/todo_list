@@ -32,27 +32,11 @@ export class TodosController {
   find(@Req() req, @Query() todoSearchDto: TodoSearchDto) {
     const id = req.user.userId;
     if (todoSearchDto) {
-      return this.todosService.search(id, todoSearchDto)
+      return this.todosService.search(id, todoSearchDto);
     } else {
       return this.todosService.findAll(id);
     }
-
   }
-
-  // @UseGuards(JwtAuthGuard)
-  // @Get('tag')
-  // findByTag(@Req() req, @Query('tag') tag: number) {
-  //   const id = req.user.userId;
-  //   // console.log(completed);
-  //   if (tag) {
-  //     // console.log(completed);
-  //     return this.todosService.searchByTag(id, tag)
-  //   } else {
-  //     // console.log("benar");
-  //     return this.todosService.findAll(id);
-  //   }
-
-  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
